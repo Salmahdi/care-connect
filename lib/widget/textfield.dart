@@ -1,13 +1,25 @@
 import 'package:flutter/material.dart';
 
+import '../custom_style.dart';
+
 class MyTextField extends StatelessWidget {
-  const MyTextField({Key? key, required this.hintText}) : super(key: key);
+  const MyTextField(
+      {Key? key,
+      required this.isobscureText,
+      required this.hintText,
+      required this.lableText,
+      required this.myController})
+      : super(key: key);
+
   final String hintText;
+  final String lableText;
+  final bool isobscureText;
+  final TextEditingController myController;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
@@ -20,22 +32,35 @@ class MyTextField extends StatelessWidget {
                 offset: Offset(4, 4),
               )
             ]),
-        height: 54,
+        height: 48,
         width: 294,
         child: TextFormField(
-          textAlign: TextAlign.center,
-          onChanged: (value) {},
-          textAlignVertical: TextAlignVertical.center,
+          obscureText: isobscureText,
+          onChanged: (value) {
+            myController.text = value;
+          },
+          //textAlignVertical: TextAlignVertical.center,
+          textAlign: TextAlign.left,
           decoration: InputDecoration(
+            contentPadding: const EdgeInsets.only(left: 10),
+
             hintText: hintText,
-            border: OutlineInputBorder(
+            labelText: lableText,
+            labelStyle: CustomTextStyle.style(
+                fontSize: 15,
+                fontWeight: FontWeight.normal,
+                color: Colors.black.withOpacity(0.8)),
+
+            //**Borders */
+            border: UnderlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),
             fillColor: Colors.white,
             enabledBorder: InputBorder.none,
             disabledBorder: InputBorder.none,
             focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white, width: 3.0),
+              borderSide: const BorderSide(
+                  color: CustomColors.primaryLightBlue, width: 3.0),
               borderRadius: BorderRadius.circular(10.0),
             ),
           ),

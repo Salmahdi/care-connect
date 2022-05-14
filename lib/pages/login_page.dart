@@ -1,5 +1,11 @@
-import 'package:care_connect/pages/signup_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../custom_style.dart';
+import '../model/users_data.dart';
+import '../services/auth_service.dart';
+import '../widget/textfield.dart';
+import 'signup_page.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -13,103 +19,50 @@ class Login extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 120,
-            ),
+            const SizedBox(height: 120),
             Image.asset(
-              'assets/logo2.png',
-              width: 350,
+              'assets/images/logo2.png',
+              width: 321,
             ),
             const SizedBox(
-              height: 61,
+              height: 47,
             ),
-            const Align(
+            Align(
               alignment: Alignment.centerLeft,
               child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
-                  'Login to your Acount',
-                  style: TextStyle(fontSize: 24),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                        offset: Offset(4, 4),
-                      )
-                    ]),
-                height: 54,
-                width: 294,
-                child: TextFormField(
-                  onChanged: (value) {},
-                  textAlignVertical: TextAlignVertical.center,
-                  decoration: InputDecoration(
-                    hintText: '  Email',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.white, width: 3.0),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: const [
-                      BoxShadow(
-                        color: Colors.black12,
-                        spreadRadius: 1,
-                        blurRadius: 10,
-                        offset: Offset(4, 4),
-                      )
-                    ]),
-                height: 54,
-                width: 294,
-                child: TextFormField(
-                  onChanged: (value) {},
-                  textAlignVertical: TextAlignVertical.center,
-                  decoration: InputDecoration(
-                    hintText: '  password',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
-                    fillColor: Colors.white,
-                    enabledBorder: InputBorder.none,
-                    disabledBorder: InputBorder.none,
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Colors.white, width: 3.0),
-                      borderRadius: BorderRadius.circular(10.0),
-                    ),
+                  'Login to your Account',
+                  style: CustomTextStyle.style(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
                   ),
                 ),
               ),
             ),
             const SizedBox(
-              height: 30,
+              height: 29,
+            ),
+
+            //**Email */
+
+            MyTextField(
+              myController: Var.emailController,
+              lableText: ' Email',
+              hintText: ' someone@example.com',
+              isobscureText: false,
+            ),
+
+            //**Password */
+
+            MyTextField(
+              myController: Var.passwordController,
+              lableText: ' Password',
+              hintText: '',
+              isobscureText: true,
+            ),
+            const SizedBox(
+              height: 45,
             ),
             Container(
               decoration: BoxDecoration(
@@ -127,44 +80,58 @@ class Login extends StatelessWidget {
               width: 294,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  primary: const Color(0xFF39729A),
+                  primary: CustomColors.primaryNormalBlue,
                 ),
-                onPressed: () {},
-                child: const Text(
+                onPressed: () {
+                  final String email = Var.emailController.text.trim();
+                  final String password = Var.passwordController.text.trim();
+                  if (email.isEmpty) {
+                    print('Email is Empty');
+                  } else {
+                    if (password.isEmpty) {
+                      print('Password is Empty');
+                    }
+                  }
+                  context.read<AthenticationService>().login(
+                        email: email,
+                        password: password,
+                      );
+                },
+                child: Text(
                   'Sign in',
-                  style: TextStyle(fontSize: 19, fontWeight: FontWeight.w400),
+                  style: CustomTextStyle.style(
+                    fontSize: 19,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.white,
+                  ),
                   textAlign: TextAlign.center,
                 ),
               ),
             ),
             const SizedBox(
-              height: 80,
+              height: 150,
             ),
             Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  'Dont have an account?',
-                  style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                Text('Dont have an account?',
+                    style: CustomTextStyle.style(
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.black.withOpacity(0.5),
+                    )),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, SignUp.pageRout);
                   },
-                  child: const Text(
-                    'Sign up',
-                    style: TextStyle(
-                      decoration: TextDecoration.underline,
-                      color: Color(0xFF39729A),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                  child: Text('Sign up',
+                      style: CustomTextStyle.style(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w700,
+                        decoration: TextDecoration.underline,
+                        color: CustomColors.primaryNormalBlue,
+                      )),
                 ),
               ],
             ),

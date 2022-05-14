@@ -1,4 +1,3 @@
-/* 
 import 'package:care_connect/pages/login_page.dart';
 import 'package:care_connect/services/splash_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,9 +12,8 @@ class AuthenticationWapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final firebaseUser = context.watch<User?>();
     if (firebaseUser != null) {
-      return SplashPage();
+      return const SplashPage();
     }
-    return Login();
+    return const Login();
   }
 }
- */
